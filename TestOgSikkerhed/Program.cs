@@ -1,12 +1,15 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Security;
 using TestOgSikkerhed.Areas.Identity;
 using TestOgSikkerhed.Data;
 using TestOgSikkerhed.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,10 +21,15 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 
+ConnectionOptions connection = new ConnectionOptions();
+
+
+
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // This is where our special rules for user, password and 2factor comes in
-builder.Services.AddIdentityCore<IdentityUser>(i =>
+builder.Services.AddDefaultIdentity<IdentityUser>(i =>
 {
     i.Password.RequireDigit = false;
     i.Password.RequireNonAlphanumeric = false;

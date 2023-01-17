@@ -8,12 +8,24 @@
 <button class="btn btn-primary" @onclick="CreateFileOnServer">Click me</button>
 
 @code {
+    int count;
+
+    string fileName = "C:\\Users\\jbo\\Documents\\Github\\Skole\\TestOgSikkerhed\\FileDownloads\\TestFile.txt";
 
     private void CreateFileOnServer()
     {
-        //FileInfo MyFile = new FileInfo(Server.MapPath("~\\App_Data\\asd.txt"));
 
-            FileInfo MyFile = new FileInfo("D:\\");
+        while (File.Exists(fileName))
+{
+            count++;
+            fileName = Path.GetDirectoryName(fileName)
+                     + Path.DirectorySeparatorChar
+                     + Path.GetFileNameWithoutExtension(fileName)
+                     + count.ToString()
+                     + Path.GetExtension(fileName);
+}
+
+        FileInfo MyFile = new FileInfo(fileName);
         if (MyFile.Exists == false)
         {
             FileStream fs = MyFile.Create();
@@ -21,4 +33,4 @@
         }
     }
 }
-}
+
