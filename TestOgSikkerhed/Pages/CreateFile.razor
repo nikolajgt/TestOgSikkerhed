@@ -13,7 +13,7 @@
     string fileName_Windows = "C:\\Users\\jbo\\Documents\\Github\\Skole\\TestOgSikkerhed\\FileDownloads\\TestFile.txt";
     string fileName_Linux = "//usr//bin//FileDownloads";
     string fileName_Initial = "";
-    string fileName = "";
+    string fileName_Current = "";
 
     private void CreateFileOnServer()
     {
@@ -22,13 +22,13 @@
         if (OperatingSystem.IsWindows())
         {
             fileName_Initial = fileName_Windows;
-            fileName = fileName_Windows;
+            fileName_Current = fileName_Windows;
         }
         else
         if (OperatingSystem.IsLinux())
         {
             fileName_Initial = fileName_Linux;
-            fileName = fileName_Linux;
+            fileName_Current = fileName_Linux;
         }
         else
         if (OperatingSystem.IsMacOS())
@@ -37,17 +37,17 @@
         }
 
 
-        while (File.Exists(fileName))
+        while (File.Exists(fileName_Current))
 {
             count++;
-            fileName = Path.GetDirectoryName(fileName_Initial)
+            fileName_Current = Path.GetDirectoryName(fileName_Initial)
                      + Path.DirectorySeparatorChar
                      + Path.GetFileNameWithoutExtension(fileName_Initial)
                      + count.ToString()
                      + Path.GetExtension(fileName_Initial);
 }
 
-        FileInfo MyFile = new FileInfo(fileName);
+        FileInfo MyFile = new FileInfo(fileName_Current);
         if (MyFile.Exists == false)
         {
             FileStream fs = MyFile.Create();
