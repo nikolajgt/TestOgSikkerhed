@@ -6,38 +6,51 @@
 <h1>Create File</h1>
 
 
-<button class="btn btn-primary" @onclick="CreateFileOnServer">Click me</button>
+<button class="btn btn-primary" @onclick="CreateFileOnServer">Click to create a .txt file</button>
 
 @code {
     int count;
 
-    string fileName_Windows = "C:\\Users\\jbo\\Documents\\Github\\Skole\\TestOgSikkerhed\\FileDownloads\\TestFile.txt";
-    string fileName_Linux = "//usr//bin//FileDownloads";
+    string fileName_Windows = "C:\\Users\\jbo\\Documents\\Github\\Skole\\TestOgSikkerhed\\FileDownloads\\";
+    string fileName_Linux = "//usr//bin//FileDownloads//";
     string fileName_Initial = "";
     string fileName_Current = "";
+    string fileName_Input = "";
+    string fileExt = ".txt";
 
-    private void CreateFileOnServer()
+    private async Task TypeFileName()
     {
+        fileName_Input = await JsRuntime.InvokeAsync<string>("prompt", "Select filename:"); // Prompt
+    }
 
+    private async void CreateFileOnServer()
+    {
+        await TypeFileName();
+
+        while (HasSpecialChars(fileName_Input))
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Filename may not contain any special symbols!"); // Alert
+            await TypeFileName();
+        }
 
         if (OperatingSystem.IsWindows())
         {
-            fileName_Initial = fileName_Windows;
-            fileName_Current = fileName_Windows;
+            fileName_Initial = fileName_Windows + fileName_Input + fileExt;
+            fileName_Current = fileName_Initial;
         }
         else
         if (OperatingSystem.IsLinux())
         {
-            fileName_Initial = fileName_Linux;
-            fileName_Current = fileName_Linux;
+            fileName_Initial = fileName_Linux + fileName_Input + fileExt;
+            fileName_Current = fileName_Initial;
         }
         else
         if (OperatingSystem.IsMacOS())
         {
-            JsRuntime.InvokeVoidAsync("alert", "Error: MacOS not supported."); // Alert
+            await JsRuntime.InvokeVoidAsync("alert", "Error: MacOS not supported.");
             Console.WriteLine("Error: MacOS not supported.");
+            // stop kode/exit?
         }
-
 
         while (File.Exists(fileName_Current))
         {
@@ -57,7 +70,7 @@
 
             if (File.Exists(fileName_Current))
             {
-                JsRuntime.InvokeVoidAsync("alert", "A file was successfully created on the server!"); // Alert
+                JsRuntime.InvokeVoidAsync("alert", "A file was successfully created on the server!");
             }
             
         }
@@ -75,5 +88,9 @@
             RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
     }
 
+    private bool HasSpecialChars(string yourString)
+    {
+        return yourString.Any(ch => !char.IsLetterOrDigit(ch));
+    }
 }
 
