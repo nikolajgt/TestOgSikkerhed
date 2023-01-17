@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Net.Security;
 using TestOgSikkerhed.Areas.Identity;
 using TestOgSikkerhed.Data;
-using TestOgSikkerhed.Models;
+//using TestOgSikkerhed.Models;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using TestOgSikkerhed.Models;
+//using TestOgSikkerhed.Models;
 
 namespace TestOgSikkerhed.Data
 {
@@ -12,6 +12,6 @@ namespace TestOgSikkerhed.Data
         }
 
         // Here we add the table we want in our DB
-        public DbSet<User> Users { get; set; }
+        //public DbSet<User> Users { get; set; }
     }
 }
