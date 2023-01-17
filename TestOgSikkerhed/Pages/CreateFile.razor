@@ -1,0 +1,24 @@
+﻿@page "/createfile"
+
+<PageTitle>Create File (Page Title)</PageTitle>
+
+<h1>Create File</h1>
+
+
+<button class="btn btn-primary" @onclick="CreateFileOnServer">Click me</button>
+
+@code {
+
+    private void CreateFileOnServer()
+    {
+        //FileInfo MyFile = new FileInfo(Server.MapPath("~\\App_Data\\asd.txt"));
+
+            FileInfo MyFile = new FileInfo("D:\\");
+        if (MyFile.Exists == false)
+        {
+            FileStream fs = MyFile.Create();
+            fs.Close();
+        }
+    }
+}
+}
