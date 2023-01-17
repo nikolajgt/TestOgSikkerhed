@@ -17,6 +17,7 @@
     string fileName_Current = "";
     string fileName_Input = "";
     string fileExt = ".txt";
+    bool invalidOS = false;
 
     private async Task TypeFileName()
     {
@@ -49,30 +50,35 @@
         {
             await JsRuntime.InvokeVoidAsync("alert", "Error: MacOS not supported.");
             Console.WriteLine("Error: MacOS not supported.");
-            // stop kode/exit?
+            invalidOS = true;
         }
 
-        while (File.Exists(fileName_Current))
+        if (invalidOS == false)
         {
-            count++;
-            fileName_Current = Path.GetDirectoryName(fileName_Initial)
+            
+        
+            while (File.Exists(fileName_Current))
+            {
+                count++;
+                fileName_Current = Path.GetDirectoryName(fileName_Initial)
                      + Path.DirectorySeparatorChar
                      + Path.GetFileNameWithoutExtension(fileName_Initial)
                      + count.ToString()
                      + Path.GetExtension(fileName_Initial);
-        }
-
-        FileInfo MyFile = new FileInfo(fileName_Current);
-        if (MyFile.Exists == false)
-        {
-            FileStream fs = MyFile.Create();
-            fs.Close();
-
-            if (File.Exists(fileName_Current))
-            {
-                JsRuntime.InvokeVoidAsync("alert", "A file was successfully created on the server!");
             }
+
+            FileInfo MyFile = new FileInfo(fileName_Current);
+            if (MyFile.Exists == false)
+            {
+                FileStream fs = MyFile.Create();
+                fs.Close();
+
+                if (File.Exists(fileName_Current))
+                {
+                    await JsRuntime.InvokeVoidAsync("alert", "A file was successfully created on the server!");
+                }
             
+            }
         }
     }
 
